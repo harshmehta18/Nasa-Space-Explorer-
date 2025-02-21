@@ -10,6 +10,16 @@ const PORT = process.env.PORT || 5002;
 app.use(cors());
 app.use(express.json());
 
+const path = require('path');
+
+// Serve static files from the React app
+app.use(express.static(path.join(__dirname, 'frontend/build')));
+
+// Handle React routing, return all requests to React app
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'frontend/build', 'index.html'));
+});
+
 const NASA_API_BASE_URL = 'https://api.nasa.gov';
 
 app.get('/apod', async (req, res) => {
